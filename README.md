@@ -114,9 +114,10 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
 {
   "id": "abc123xyz789",
   "url": "https://chatgpt.com/share/abc123xyz789",
+  "status": "completed",
   "result": {
     "model": "gpt-4",
-    "response": "When comparing programming languages for web development in 2025, three languages stand out...",
+    "text": "When comparing programming languages for web development in 2025, three languages stand out...",
     "markdown": "**When comparing programming languages for web development in 2025**, three languages stand out...",
     "shoppingCards": [
       {
@@ -162,10 +163,7 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
     ],
     "searchQueries": ["web development languages 2025"],
     "rawResponse": []
-  },
-  "status": "completed",
-  "createdAt": "2025-11-06T14:32:15Z",
-  "updatedAt": "2025-11-06T14:32:48Z"
+  }
 }
 ```
 
@@ -218,8 +216,9 @@ The structured ChatGPT scraper output includes fields such as `id`, `url`, `resu
 |-------|-------------|------|
 | `id` | Unique identifier for the monitoring request | string |
 | `url` | ChatGPT share URL for the conversation | string |
+| `status` | Status of the monitoring request (e.g., `completed`, `pending`, `failed`) | string |
 | `result.model` | The ChatGPT model used to generate the response | string |
-| `result.response` | The complete ChatGPT response as plain text | string |
+| `result.text` | The complete ChatGPT response as plain text | string |
 | `result.markdown` | The response formatted in Markdown (when `include.markdown` is true) | string |
 | `result.shoppingCards` | Array of shopping/product cards extracted from response | array |
 | `result.shoppingCards[].tags` | Category tags for the shopping card | array |
@@ -234,12 +233,21 @@ The structured ChatGPT scraper output includes fields such as `id`, `url`, `resu
 | `result.shoppingCards[].products[].numReviews` | Number of reviews | integer |
 | `result.shoppingCards[].products[].id` | Unique product identifier | string |
 | `result.shoppingCards[].products[].offers` | Array of shopping offers from different merchants | array |
+| `result.shoppingCards[].products[].offers[].merchant_name` | Merchant name | string |
+| `result.shoppingCards[].products[].offers[].product_name` | Product name as listed by merchant | string |
+| `result.shoppingCards[].products[].offers[].url` | Offer URL with ChatGPT attribution | string |
+| `result.shoppingCards[].products[].offers[].price` | Offer price | string |
+| `result.shoppingCards[].products[].offers[].details` | Stock and delivery information | string |
+| `result.shoppingCards[].products[].offers[].available` | Offer availability status | boolean |
+| `result.shoppingCards[].products[].offers[].checkoutable` | Whether offer can be checked out directly | boolean |
+| `result.shoppingCards[].products[].offers[].price_details` | Detailed price breakdown (base, total) | object |
+| `result.shoppingCards[].products[].offers[].tag` | Promotional tag (e.g., "Best price") | object |
 | `result.shoppingCards[].products[].rating_grouped_citation` | Rating source information | object |
+| `result.shoppingCards[].products[].rating_grouped_citation.title` | Source title | string |
+| `result.shoppingCards[].products[].rating_grouped_citation.url` | Source URL | string |
+| `result.shoppingCards[].products[].rating_grouped_citation.supporting_websites` | Array of supporting website references | array |
 | `result.searchQueries` | Query fan-out ChatGPT used to generate response (when `include.searchQueries` is true) | array |
 | `result.rawResponse` | Array of ChatGPT's streamed response events (when `include.rawResponse` is true) | array |
-| `status` | Status of the monitoring request (e.g., `completed`, `pending`) | string |
-| `createdAt` | Timestamp when the request was created | timestamp |
-| `updatedAt` | Timestamp when the request was completed | timestamp |
 
 ## Practical ChatGPT scraper use cases
 

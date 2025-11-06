@@ -327,10 +327,7 @@ For detailed documentation, advanced features, and integration guides, visit:
 
 ## Contact us
 
-If you have questions or need support, reach out to us:
-
-- **Online form:** available on [our contact page](https://cloro.dev/contact)
-- **Documentation:** [docs.cloro.dev](https://docs.cloro.dev)
+If you have questions or need support, reach out to us on [our contact page](https://cloro.dev/contact).
 
 ---
 

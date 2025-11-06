@@ -6,7 +6,7 @@
 
 The [ChatGPT Scraper](https://cloro.dev/chatgpt/) by cloro enables developers to programmatically interact with ChatGPT and automatically collect AI-generated responses along with structured metadata. Instead of manual data collection, you can retrieve results as parsed JSON, raw HTML, or other formats for seamless integration into your workflows.
 
-You can use Cloro's ChatGPT Scraper for AI research, content generation automation, competitive analysis, and conversation monitoring. It handles dynamic AI-generated content, supports real-time extraction, and eliminates the need to manage authentication, sessions, or anti-bot systems.
+You can use cloro's ChatGPT Scraper for AI research, content generation automation, competitive analysis, and conversation monitoring. It handles dynamic AI-generated content, supports real-time extraction, and eliminates the need to manage authentication, sessions, or anti-bot systems.
 
 ## How it works
 
@@ -24,14 +24,14 @@ payload = {
     'country': 'US',
     'include': {
         'markdown': True,
-        'rawResponse': False,
-        'searchQueries': False
+        'rawResponse': True,
+        'searchQueries': True
     }
 }
 
 # Get a response
 response = requests.post(
-    'https://api.cloro.dev/chatgpt',
+    'https://api.cloro.dev/v1/monitor/chatgpt',
     headers={'Authorization': 'Bearer YOUR_API_KEY'},
     json=payload
 )
@@ -47,7 +47,7 @@ with open('response.json', 'w') as file:
 ### Request sample (cURL)
 
 ```bash
-curl -X POST https://api.cloro.dev/chatgpt \
+curl -X POST https://api.cloro.dev/v1/monitor/chatgpt \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -55,8 +55,8 @@ curl -X POST https://api.cloro.dev/chatgpt \
     "country": "US",
     "include": {
       "markdown": true,
-      "rawResponse": false,
-      "searchQueries": false
+      "rawResponse": true,
+      "searchQueries": true
     }
   }'
 ```
@@ -71,12 +71,12 @@ const payload = {
   country: 'US',
   include: {
     markdown: true,
-    rawResponse: false,
-    searchQueries: false
+    rawResponse: true,
+    searchQueries: true
   }
 };
 
-axios.post('https://api.cloro.dev/chatgpt', payload, {
+axios.post('https://api.cloro.dev/v1/monitor/chatgpt', payload, {
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
@@ -114,11 +114,9 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
 
 ```json
 {
-  "id": "abc123xyz789",
-  "url": "https://chatgpt.com/share/abc123xyz789",
-  "status": "completed",
+  "status": "success",
   "result": {
-    "model": "gpt-4",
+    "model": "gpt-5-mini",
     "text": "When comparing programming languages for web development in 2025, three languages stand out...",
     "markdown": "**When comparing programming languages for web development in 2025**, three languages stand out...",
     "shoppingCards": [
@@ -164,7 +162,7 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
       }
     ],
     "searchQueries": ["web development languages 2025"],
-    "rawResponse": []
+    "rawResponse": [...]
   }
 }
 ```
@@ -194,7 +192,7 @@ One of the unique features of cloro's ChatGPT scraper is automatic extraction of
 
 ### Query fan-out insights
 
-When you set `include.searchQueries` to `true` (+2 credits), Cloro reveals the actual query fan-out ChatGPT used internally to generate its response. This provides valuable insight into:
+When you set `include.searchQueries` to `true` (+2 credits), cloro reveals the actual query fan-out ChatGPT used internally to generate its response. This provides valuable insight into:
 
 - How ChatGPT interprets and breaks down your prompt
 - What specific searches it performs to gather information
@@ -210,7 +208,7 @@ Enable `include.rawResponse` (+2 credits) to access the complete streaming respo
 
 ## JSON output structure
 
-The structured ChatGPT scraper output includes fields such as `id`, `url`, `result.model`, `result.text`, and more. The tables below break down the elements returned, along with descriptions and data types.
+The structured ChatGPT scraper output includes fields such as  `result.model`, `result.text`, and more. The tables below break down the elements returned, along with descriptions and data types.
 
 **Note:** The number of items and fields may vary depending on the submitted prompt and whether shopping cards are available in the response.
 
@@ -218,9 +216,7 @@ The structured ChatGPT scraper output includes fields such as `id`, `url`, `resu
 
 | Field | Description | Type |
 |-------|-------------|------|
-| `id` | Unique identifier for the monitoring request | string |
-| `url` | ChatGPT share URL for the conversation | string |
-| `status` | Status of the monitoring request (e.g., `completed`, `pending`, `failed`) | string |
+| `status` | Status of the monitoring request (e.g., `success`) | string |
 | `result.model` | The ChatGPT model used to generate the response | string |
 | `result.text` | The complete ChatGPT response as plain text | string |
 | `result.markdown` | The response formatted in Markdown (when `include.markdown` is true) | string |

@@ -210,9 +210,11 @@ Enable `include.rawResponse` (+2 credits) to access the complete streaming respo
 
 ## JSON output structure
 
-The structured ChatGPT scraper output includes fields such as `id`, `url`, `result.model`, `result.response`, and more. The table below breaks down the elements returned, along with descriptions and data types.
+The structured ChatGPT scraper output includes fields such as `id`, `url`, `result.model`, `result.text`, and more. The tables below break down the elements returned, along with descriptions and data types.
 
 **Note:** The number of items and fields may vary depending on the submitted prompt and whether shopping cards are available in the response.
+
+### Main response fields
 
 | Field | Description | Type |
 |-------|-------------|------|
@@ -223,33 +225,54 @@ The structured ChatGPT scraper output includes fields such as `id`, `url`, `resu
 | `result.text` | The complete ChatGPT response as plain text | string |
 | `result.markdown` | The response formatted in Markdown (when `include.markdown` is true) | string |
 | `result.shoppingCards` | Array of shopping/product cards extracted from response | array |
-| `result.shoppingCards[].tags` | Category tags for the shopping card | array |
-| `result.shoppingCards[].products` | Array of product information objects | array |
-| `result.shoppingCards[].products[].title` | Product name | string |
-| `result.shoppingCards[].products[].url` | Product page URL with ChatGPT attribution | string |
-| `result.shoppingCards[].products[].price` | Current price | string |
-| `result.shoppingCards[].products[].featured_tag` | Product category or style tag | string |
-| `result.shoppingCards[].products[].merchant` | Merchant information | string |
-| `result.shoppingCards[].products[].imageUrls` | Array of product image URLs | array |
-| `result.shoppingCards[].products[].rating` | Product rating (0-5 scale) | float |
-| `result.shoppingCards[].products[].numReviews` | Number of reviews | integer |
-| `result.shoppingCards[].products[].id` | Unique product identifier | string |
-| `result.shoppingCards[].products[].offers` | Array of shopping offers from different merchants | array |
-| `result.shoppingCards[].products[].offers[].merchant_name` | Merchant name | string |
-| `result.shoppingCards[].products[].offers[].product_name` | Product name as listed by merchant | string |
-| `result.shoppingCards[].products[].offers[].url` | Offer URL with ChatGPT attribution | string |
-| `result.shoppingCards[].products[].offers[].price` | Offer price | string |
-| `result.shoppingCards[].products[].offers[].details` | Stock and delivery information | string |
-| `result.shoppingCards[].products[].offers[].available` | Offer availability status | boolean |
-| `result.shoppingCards[].products[].offers[].checkoutable` | Whether offer can be checked out directly | boolean |
-| `result.shoppingCards[].products[].offers[].price_details` | Detailed price breakdown (base, total) | object |
-| `result.shoppingCards[].products[].offers[].tag` | Promotional tag (e.g., "Best price") | object |
-| `result.shoppingCards[].products[].rating_grouped_citation` | Rating source information | object |
-| `result.shoppingCards[].products[].rating_grouped_citation.title` | Source title | string |
-| `result.shoppingCards[].products[].rating_grouped_citation.url` | Source URL | string |
-| `result.shoppingCards[].products[].rating_grouped_citation.supporting_websites` | Array of supporting website references | array |
 | `result.searchQueries` | Query fan-out ChatGPT used to generate response (when `include.searchQueries` is true) | array |
 | `result.rawResponse` | Array of ChatGPT's streamed response events (when `include.rawResponse` is true) | array |
+
+### Shopping cards structure
+
+When available, each shopping card in `result.shoppingCards[]` contains the following fields:
+
+| Field | Description | Type |
+|-------|-------------|------|
+| `tags` | Category tags for the shopping card | array |
+| `products` | Array of product information objects | array |
+| `products[].title` | Product name | string |
+| `products[].url` | Product page URL with ChatGPT attribution | string |
+| `products[].price` | Current price | string |
+| `products[].featured_tag` | Product category or style tag | string |
+| `products[].merchant` | Merchant information | string |
+| `products[].imageUrls` | Array of product image URLs | array |
+| `products[].rating` | Product rating (0-5 scale) | float |
+| `products[].numReviews` | Number of reviews | integer |
+| `products[].id` | Unique product identifier | string |
+| `products[].offers` | Array of shopping offers from different merchants | array |
+| `products[].rating_grouped_citation` | Rating source information | object |
+
+### Product offers structure
+
+Each offer in `products[].offers[]` contains:
+
+| Field | Description | Type |
+|-------|-------------|------|
+| `merchant_name` | Merchant name | string |
+| `product_name` | Product name as listed by merchant | string |
+| `url` | Offer URL with ChatGPT attribution | string |
+| `price` | Offer price | string |
+| `details` | Stock and delivery information | string |
+| `available` | Offer availability status | boolean |
+| `checkoutable` | Whether offer can be checked out directly | boolean |
+| `price_details` | Detailed price breakdown (base, total) | object |
+| `tag` | Promotional tag (e.g., "Best price") | object |
+
+### Rating citation structure
+
+The `products[].rating_grouped_citation` object contains:
+
+| Field | Description | Type |
+|-------|-------------|------|
+| `title` | Source title | string |
+| `url` | Source URL | string |
+| `supporting_websites` | Array of supporting website references | array |
 
 ## Practical ChatGPT scraper use cases
 

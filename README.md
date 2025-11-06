@@ -1,6 +1,6 @@
 # ChatGPT Scraper
 
-<img width="1043" height="360" alt="Screenshot 2025-11-06 at 01 15 14" src="https://github.com/user-attachments/assets/1d910d48-1f6b-414c-8b38-15ade9842b78" />
+[![ChatGPT scraper by cloro](https://github.com/cloro-dev/chatgpt-scraper/blob/main/chatgpt-scraper-hero-image.png)](https://cloro.dev/chatgpt/?utm_source=github.com)
 
 [![cloro](https://img.shields.io/badge/Powered%20by-Cloro-blue?style=for-the-badge)](https://cloro.dev/)
 

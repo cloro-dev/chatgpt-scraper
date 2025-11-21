@@ -321,10 +321,19 @@ For detailed documentation, advanced features, and integration guides, visit:
 - **API documentation:** [docs.cloro.dev](https://docs.cloro.dev)
 - **ChatGPT scraper page:** [cloro.dev/chatgpt](https://cloro.dev/chatgpt/)
 
+## Other available scrapers
+
+- **[AI Mode](https://cloro.dev/ai-mode/)** - Extracts structured data from Google AI Mode for general knowledge queries, workflow optimization, and technical guidance.
+- **[AI Overview](https://cloro.dev/ai-overview/)** - Extracts structured data from Google AI Overview for comprehensive search result analysis and AI-curated insights.
+- **[ChatGPT](https://cloro.dev/chatgpt/)** - Extracts structured data from ChatGPT with advanced features including shopping cards, raw response data, and query fan-out.
+- **[Copilot](https://cloro.dev/copilot/)** - Extracts structured data from Microsoft Copilot for development tools, Microsoft ecosystem research, and enterprise-focused queries.
+- **[Google](https://cloro.dev/google-search/)** - Extracts structured data from Google Search results, including organic results, People Also Ask questions, related searches, and optional AI Overview data.
+- **[Perplexity](https://cloro.dev/perplexity/)** - Extracts comprehensive structured data from Perplexity AI with real-time web sources, automatically detecting and extracting rich data objects.
+
 ## Contact us
 
 If you have questions or need support, reach out to us on [our contact page](https://cloro.dev/contact).
 
 ---
 
-*Built with ❤️ by the cloro team*
+Built with ❤️ by the cloro team

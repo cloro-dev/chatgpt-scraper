@@ -1,8 +1,8 @@
 # ChatGPT Scraper
 
-[![ChatGPT scraper by cloro](https://github.com/cloro-dev/chatgpt-scraper/blob/main/chatgpt-scraper-hero-image.png)](https://cloro.dev/chatgpt/?utm_source=github.com)
+[![ChatGPT scraper by cloro](https://github.com/cloro-dev/chatgpt-scraper/blob/main/chatgpt-scraper-hero-image.png)](https://cloro.dev/chatgpt/?utm_source=github)
 
-[![cloro](https://img.shields.io/badge/Powered%20by-Cloro-blue?style=for-the-badge)](https://cloro.dev/)
+[![cloro](https://img.shields.io/badge/Powered%20by-cloro-blue?style=for-the-badge)](https://cloro.dev/)
 
 The [ChatGPT Scraper](https://cloro.dev/chatgpt/) by cloro enables developers to programmatically interact with ChatGPT and automatically collect AI-generated responses along with structured metadata. Instead of manual data collection, you can retrieve results as parsed JSON, raw HTML, or other formats for seamless integration into your workflows.
 
@@ -64,43 +64,43 @@ curl -X POST https://api.cloro.dev/v1/monitor/chatgpt \
 ### Request sample (Node.js)
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
 const payload = {
-  prompt: 'Compare the top 3 programming languages for web development in 2025',
-  country: 'US',
+  prompt: "Compare the top 3 programming languages for web development in 2025",
+  country: "US",
   include: {
     markdown: true,
     rawResponse: true,
-    searchQueries: true
-  }
+    searchQueries: true,
+  },
 };
 
-axios.post('https://api.cloro.dev/v1/monitor/chatgpt', payload, {
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => {
-  console.log(response.data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
+axios
+  .post("https://api.cloro.dev/v1/monitor/chatgpt", payload, {
+    headers: {
+      Authorization: "Bearer YOUR_API_KEY",
+      "Content-Type": "application/json",
+    },
+  })
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 ```
-
-**Note:** Set an appropriate timeout (e.g., 120-180 seconds) when making requests, as ChatGPT responses may take time to generate depending on complexity.
 
 ### Request parameters
 
-| Parameter | Description | Default value |
-|-----------|-------------|---------------|
-| `prompt`* | The prompt or question to send to ChatGPT (1-10,000 characters) | – |
-| `country` | Optional country/region code for localized monitoring (e.g., `US`, `GB`, `DE`) | – |
-| `include.markdown` | Include response in Markdown format when set to true | `false` |
-| `include.rawResponse` | Include raw streaming response events for debugging (+2 credits) | `false` |
-| `include.searchQueries` | Include query fan-out ChatGPT used to generate response (+2 credits) | `false` |
+| Parameter               | Description                                                                    | Default value |
+| ----------------------- | ------------------------------------------------------------------------------ | ------------- |
+| `prompt`\*              | The prompt or question to send to ChatGPT (1-10,000 characters)                | –             |
+| `country`               | Optional country/region code for localized monitoring (e.g., `US`, `GB`, `DE`) | –             |
+| `include.markdown`      | Include response in Markdown format when set to true                           | `false`       |
+| `include.rawResponse`   | Include raw streaming response events for debugging (+2 credits)               | `false`       |
+| `include.searchQueries` | Include query fan-out ChatGPT used to generate response (+2 credits)           | `false`       |
+| `include.html`          | Include URL to full HTML response when set to true (URL expires after 24h)     | `false`       |
 
 \* Mandatory parameters
 
@@ -119,6 +119,7 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
     "model": "gpt-5-mini",
     "text": "When comparing programming languages for web development in 2025, three languages stand out...",
     "markdown": "**When comparing programming languages for web development in 2025**, three languages stand out...",
+    "html": "https://storage.cloro.dev/results/c45a5081-808d-4ed3-9c86-e4baf16c8ab8/page-1.html",  // URL expires after 24 hours
     "shoppingCards": [
       {
         "tags": ["electronics", "deals"],
@@ -129,9 +130,9 @@ The ChatGPT Scraper API returns either an HTML document or a structured JSON obj
             "price": "$57.00",
             "featured_tag": "electronics",
             "merchant": "Example Store + others",
-            "imageUrls": ["https://example.com/image.jpg"],
+            "image_urls": ["https://example.com/image.jpg"],
             "rating": 4.5,
-            "numReviews": 128,
+            "num_reviews": 128,
             "id": "prod_123",
             "offers": [
               {
@@ -188,6 +189,51 @@ One of the unique features of cloro's ChatGPT scraper is automatic extraction of
 - **Product research:** Extract structured product data for competitive analysis
 - **Marketing intelligence:** Understand which products ChatGPT highlights in responses
 
+## Citation pills
+
+Citation pills are inline citations that appear within ChatGPT responses when it references specific sources. The `markdown` field contains these citations as inline links, while the `text` field contains plain text without links.
+
+**Example response with citation pills:**
+
+```json
+{
+  "success": true,
+  "result": {
+    "text": "**ChatGPT** — Most versatile for writing, reasoning, and general problem-solving.\n**Claude** — Strong focus on safety and ethical reasoning.",
+    "markdown": "**ChatGPT** — Most versatile for writing, reasoning, and general problem-solving. [Top 10 Best AI Apps in 2025](https://www.top10.com/best-lists/best-ai-apps)\n**Claude** — Strong focus on safety and ethical reasoning. [Best AI Platforms Compared](https://www.godofprompt.ai/blog/best-ai)",
+    "citationPills": [
+      {
+        "url": "https://www.top10.com/best-lists/best-ai-apps",
+        "label": "Top 10 Best AI Apps in 2025",
+        "description": "A comprehensive guide to the best AI applications available today",
+        "domain": "top10.com",
+        "datePublished": "2025-01-15",
+        "citationPillId": 0
+      },
+      {
+        "url": "https://www.godofprompt.ai/blog/best-ai",
+        "label": "Best AI Platforms Compared",
+        "description": "Expert comparison of leading AI platforms and their capabilities",
+        "domain": "godofprompt.ai",
+        "datePublished": "2025-02-01",
+        "citationPillId": 1
+      }
+    ]
+  }
+}
+```
+
+### Citation pill structure
+
+| Field            | Description                                           | Type    |
+| ---------------- | ----------------------------------------------------- | ------- |
+| `url`            | The URL of the citation source                        | string  |
+| `label`          | Label/title of the citation                           | string  |
+| `description`    | Description of the citation content                   | string  |
+| `domain`         | Domain of the citation source                         | string  |
+| `datePublished`  | ISO 8601 date when the source was published           | string  |
+| `citationPillId` | Unique identifier for matching citations in markdown  | integer |
+
 ## Advanced features
 
 ### Query fan-out insights
@@ -208,67 +254,68 @@ Enable `include.rawResponse` (+2 credits) to access the complete streaming respo
 
 ## JSON output structure
 
-The structured ChatGPT scraper output includes fields such as  `result.model`, `result.text`, and more. The tables below break down the elements returned, along with descriptions and data types.
+The structured ChatGPT scraper output includes fields such as `result.model`, `result.text`, and more. The tables below break down the elements returned, along with descriptions and data types.
 
 **Note:** The number of items and fields may vary depending on the submitted prompt and whether shopping cards are available in the response.
 
 ### Main response fields
 
-| Field | Description | Type |
-|-------|-------------|------|
-| `status` | Status of the monitoring request (e.g., `success`) | string |
-| `result.model` | The ChatGPT model used to generate the response | string |
-| `result.text` | The complete ChatGPT response as plain text | string |
-| `result.markdown` | The response formatted in Markdown (when `include.markdown` is true) | string |
-| `result.shoppingCards` | Array of shopping/product cards extracted from response | array |
-| `result.searchQueries` | Query fan-out ChatGPT used to generate response (when `include.searchQueries` is true) | array |
-| `result.rawResponse` | Array of ChatGPT's streamed response events (when `include.rawResponse` is true) | array |
+| Field                  | Description                                                                            | Type   |
+| ---------------------- | -------------------------------------------------------------------------------------- | ------ |
+| `status`               | Status of the monitoring request (e.g., `success`)                                     | string |
+| `result.model`         | The ChatGPT model used to generate the response                                        | string |
+| `result.text`          | The complete ChatGPT response as plain text                                            | string |
+| `result.markdown`      | The response formatted in Markdown with inline citation links                          | string |
+| `result.shoppingCards` | Array of shopping/product cards extracted from response                                | array  |
+| `result.citationPills` | Array of inline citation metadata (corresponds to links in markdown)                   | array  |
+| `result.searchQueries` | Query fan-out ChatGPT used to generate response (when `include.searchQueries` is true) | array  |
+| `result.rawResponse`   | Array of ChatGPT's streamed response events (when `include.rawResponse` is true)       | array  |
 
 ### Shopping cards structure
 
 When available, each shopping card in `result.shoppingCards[]` contains the following fields:
 
-| Field | Description | Type |
-|-------|-------------|------|
-| `tags` | Category tags for the shopping card | array |
-| `products` | Array of product information objects | array |
-| `products[].title` | Product name | string |
-| `products[].url` | Product page URL with ChatGPT attribution | string |
-| `products[].price` | Current price | string |
-| `products[].featured_tag` | Product category or style tag | string |
-| `products[].merchant` | Merchant information | string |
-| `products[].imageUrls` | Array of product image URLs | array |
-| `products[].rating` | Product rating (0-5 scale) | float |
-| `products[].numReviews` | Number of reviews | integer |
-| `products[].id` | Unique product identifier | string |
-| `products[].offers` | Array of shopping offers from different merchants | array |
-| `products[].rating_grouped_citation` | Rating source information | object |
+| Field                                | Description                                       | Type    |
+| ------------------------------------ | ------------------------------------------------- | ------- |
+| `tags`                               | Category tags for the shopping card               | array   |
+| `products`                           | Array of product information objects              | array   |
+| `products[].title`                   | Product name                                      | string  |
+| `products[].url`                     | Product page URL with ChatGPT attribution         | string  |
+| `products[].price`                   | Current price                                     | string  |
+| `products[].featured_tag`            | Product category or style tag                     | string  |
+| `products[].merchant`                | Merchant information                              | string  |
+| `products[].image_urls`               | Array of product image URLs                       | array   |
+| `products[].rating`                  | Product rating (0-5 scale)                        | float   |
+| `products[].num_reviews`              | Number of reviews                                 | integer |
+| `products[].id`                      | Unique product identifier                         | string  |
+| `products[].offers`                  | Array of shopping offers from different merchants | array   |
+| `products[].rating_grouped_citation` | Rating source information                         | object  |
 
 ### Product offers structure
 
 Each offer in `products[].offers[]` contains:
 
-| Field | Description | Type |
-|-------|-------------|------|
-| `merchant_name` | Merchant name | string |
-| `product_name` | Product name as listed by merchant | string |
-| `url` | Offer URL with ChatGPT attribution | string |
-| `price` | Offer price | string |
-| `details` | Stock and delivery information | string |
-| `available` | Offer availability status | boolean |
-| `checkoutable` | Whether offer can be checked out directly | boolean |
-| `price_details` | Detailed price breakdown (base, total) | object |
-| `tag` | Promotional tag (e.g., "Best price") | object |
+| Field           | Description                               | Type    |
+| --------------- | ----------------------------------------- | ------- |
+| `merchant_name` | Merchant name                             | string  |
+| `product_name`  | Product name as listed by merchant        | string  |
+| `url`           | Offer URL with ChatGPT attribution        | string  |
+| `price`         | Offer price                               | string  |
+| `details`       | Stock and delivery information            | string  |
+| `available`     | Offer availability status                 | boolean |
+| `checkoutable`  | Whether offer can be checked out directly | boolean |
+| `price_details` | Detailed price breakdown (base, total)    | object  |
+| `tag`           | Promotional tag (e.g., "Best price")      | object  |
 
 ### Rating citation structure
 
 The `products[].rating_grouped_citation` object contains:
 
-| Field | Description | Type |
-|-------|-------------|------|
-| `title` | Source title | string |
-| `url` | Source URL | string |
-| `supporting_websites` | Array of supporting website references | array |
+| Field                 | Description                            | Type   |
+| --------------------- | -------------------------------------- | ------ |
+| `title`               | Source title                           | string |
+| `url`                 | Source URL                             | string |
+| `supporting_websites` | Array of supporting website references | array  |
 
 ## Practical ChatGPT scraper use cases
 
@@ -296,6 +343,7 @@ Any website is legal to be scraped as long as the information is publicly access
 ### What makes cloro's ChatGPT scraper unique?
 
 cloro's ChatGPT endpoint is the most reliable & comprehensive monitoring solution available, offering:
+
 - **Automatic shopping card extraction** for e-commerce data
 - **Query fan-out insights** to see ChatGPT's internal search queries
 - **Raw response access** for advanced debugging and analysis
@@ -307,8 +355,8 @@ We don't recommend putting any timeout, given that our system retries automatica
 ### How does credit usage work?
 
 The request with Web Search uses 5 credits. Additional features have extra costs:
-- `include.rawResponse`: +2 credits per request
-- `include.searchQueries`: +2 credits per request
+
+- `include.rawResponse` and/or `include.searchQueries`: +2 credits total (enabling either or both adds +2 credits)
 
 ### Do shopping cards require extra credits?
 
@@ -318,22 +366,24 @@ No, shopping cards are automatically extracted when available at no additional c
 
 For detailed documentation, advanced features, and integration guides, visit:
 
-- **API documentation:** [docs.cloro.dev](https://docs.cloro.dev)
+- **API documentation:** [docs.cloro.dev](https://docs.cloro.dev/)
 - **ChatGPT scraper page:** [cloro.dev/chatgpt](https://cloro.dev/chatgpt/)
 
 ## Other available scrapers
 
 - **[AI Mode](https://cloro.dev/ai-mode/)** - Extracts structured data from Google AI Mode for general knowledge queries, workflow optimization, and technical guidance.
 - **[AI Overview](https://cloro.dev/ai-overview/)** - Extracts structured data from Google AI Overview for comprehensive search result analysis and AI-curated insights.
-- **[Gemini](https://cloro.dev/gemini/)** - Extracts structured data from Google Gemini for complex reasoning, content generation, and source confidence scoring.
 - **[ChatGPT](https://cloro.dev/chatgpt/)** - Extracts structured data from ChatGPT with advanced features including shopping cards, raw response data, and query fan-out.
 - **[Copilot](https://cloro.dev/copilot/)** - Extracts structured data from Microsoft Copilot for development tools, Microsoft ecosystem research, and enterprise-focused queries.
-- **[Google](https://cloro.dev/google-search/)** - Extracts structured data from Google Search results, including organic results, People Also Ask questions, related searches, and optional AI Overview data.
+- **[Gemini](https://cloro.dev/gemini/)** - Extracts structured data from Google Gemini for complex reasoning, content generation, and source confidence scoring.
+- **[Google Search](https://cloro.dev/google-search/)** - Extracts structured data from Google Search results, including organic results, People Also Ask questions, related searches, and optional AI Overview data.
+- **[Google News](https://cloro.dev/google-news/)** - Extracts structured news articles from Google News with titles, snippets, sources, dates, and thumbnail images for news monitoring and media tracking.
+- **[Grok](https://cloro.dev/grok/)** - Extracts structured data from Grok for current events, news tracking, and real-time information gathering.
 - **[Perplexity](https://cloro.dev/perplexity/)** - Extracts comprehensive structured data from Perplexity AI with real-time web sources, automatically detecting and extracting rich data objects.
 
 ## Contact us
 
-If you have questions or need support, reach out to us on [our contact page](https://cloro.dev/contact).
+If you have questions or need support, reach out to us at [support@cloro.dev](mailto:support@cloro.dev).
 
 ---
 

@@ -1,12 +1,28 @@
-# ChatGPT Scraper
+# ChatGPT Scraper API — Web UI Responses, Citations, Ads & Shopping Cards
 
 [![ChatGPT scraper by cloro](https://github.com/cloro-dev/chatgpt-scraper/blob/main/chatgpt-scraper-hero-image.png)](https://cloro.dev/chatgpt/?utm_source=github)
 
 [![cloro](https://img.shields.io/badge/Powered%20by-cloro-blue?style=for-the-badge)](https://cloro.dev/)
 
-The [ChatGPT Scraper](https://cloro.dev/chatgpt/) by cloro lets developers programmatically interact with ChatGPT and collect AI-generated responses along with structured metadata. Instead of manual data collection, you can retrieve results as parsed JSON, raw HTML, or other formats for integration into your workflows.
+Scrape ChatGPT web-UI responses via API. Returns parsed JSON with the full text and markdown, **citation pills**, **ads**, **shopping cards** and **inline products**, **business & location data** (Yelp / Google Business), and the internal **query fan-out** ChatGPT used. Python, cURL, and Node.js examples below.
 
-You can use cloro's ChatGPT Scraper for AI research, content generation automation, competitive analysis, and conversation monitoring. It handles dynamic AI-generated content, supports real-time extraction, and removes the need to manage authentication, sessions, or anti-bot systems.
+Built for developers doing AI brand monitoring, e-commerce and shopping-card tracking, competitive intelligence, AI-answer research, and content generation at scale — without managing CAPTCHAs, rotating proxies, session state, or ChatGPT's anti-bot defenses.
+
+## Quick start
+
+1. Get an API key at [cloro.dev](https://cloro.dev/?utm_source=github&utm_medium=readme).
+2. Send a request:
+
+   ```bash
+   curl -X POST https://api.cloro.dev/v1/monitor/chatgpt \
+     -H "Authorization: Bearer YOUR_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Compare the top 3 running shoes for marathon training"}'
+   ```
+
+3. Parse the returned JSON — `result.text`, `result.markdown`, `result.citationPills[]`, `result.shoppingCards[]`, `result.ads[]`, `result.map[]`.
+
+Full examples in [Python](#request-sample-python), [cURL](#request-sample-curl), and [Node.js](#request-sample-nodejs) below. Comparison against other ChatGPT scrapers: [cloro.dev/blog/best_chatgpt_scraper](https://cloro.dev/blog/best_chatgpt_scraper/?utm_source=github&utm_medium=readme).
 
 ## How it works
 
@@ -442,6 +458,7 @@ The structured ChatGPT scraper output includes fields such as `result.model`, `r
 | `result.citationPills`  | Array of inline citation metadata (corresponds to links in markdown)                      | array  |
 | `result.ads`            | Array of ads displayed in ChatGPT response (when `include.ads` is true)                   | array  |
 | `result.searchQueries`  | Query fan-out ChatGPT used to generate response (when `include.searchQueries` is true)    | array  |
+| `result.mapSearchQueries` | Map queries ChatGPT fired at the maps tool to build `result.map` (when `include.searchQueries` is true) | array  |
 | `result.rawResponse`    | Array of ChatGPT's streamed response events (when `include.rawResponse` is true)          | array  |
 
 ### Shopping cards structure
@@ -583,7 +600,7 @@ For detailed documentation, advanced features, and integration guides, visit:
 
 ## Contact us
 
-If you have questions or need support, reach out to us at [support@cloro.dev](mailto:support@cloro.dev).
+If you have questions or need support, join our community at [r/cloroapi](https://www.reddit.com/r/cloroapi/).
 
 ---
 

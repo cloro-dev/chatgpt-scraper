@@ -50,7 +50,7 @@ Node.js and async/webhook examples are in the [endpoint documentation](https://c
 | Parameter | Description | Default |
 | --- | --- | --- |
 | `prompt`\* | The query or question (1-10,000 characters) | – |
-| `country` | Country code for localized results (`US`, `GB`, `DE`) | `US` |
+| `country`\* | Country code for localized results (`US`, `GB`, `DE`) | – |
 | `state` | US state code for finer localization | – |
 | `include.markdown` | Return the answer as Markdown | `false` |
 | `include.html` | Return a URL to the full HTML (expires after 24h) | `false` |
@@ -58,6 +58,7 @@ Node.js and async/webhook examples are in the [endpoint documentation](https://c
 | `include.searchQueries` | Return the query fan-out terms ChatGPT searched | `false` |
 | `include.shopping` | Return shopping cards and inline products | `false` |
 | `include.ads` | Return sponsored blocks | `false` |
+| `disableWebSearch` | Return the answer ChatGPT gives on its own instead of forcing a web search | `false` |
 
 \* Required
 
@@ -67,10 +68,8 @@ Node.js and async/webhook examples are in the [endpoint documentation](https://c
 {
   "success": true,
   "result": {
-    "model": "gpt-5",
     "text": "For remote teams, the strongest options are...",
-    "citationPills": [{ "citationPillId": "a1b2", "label": "Asana", "url": "https://asana.com", "domain": "asana.com" }],
-    "shoppingCards": [{ "title": "Standing Desk", "price": { "value": 499.0, "currency": "$" }, "merchant_name": "Wayfair", "checkoutable": true }],
+    "citationPills": [{ "citationPillId": 0, "label": "Asana", "url": "https://asana.com", "domain": "asana.com" }],
     "searchQueries": ["best project management software 2026", "asana vs monday remote teams"],
     "markdown": "For remote teams, the strongest options are **Asana**..."
   }
@@ -79,13 +78,15 @@ Node.js and async/webhook examples are in the [endpoint documentation](https://c
 
 Alongside `text` and `markdown`:
 
-1. **`citationPills`** — the inline citation chips, one entry per cited source, sharing a `citationPillId` when a pill cites several.
-2. **`searchQueries`** — the query fan-out. ChatGPT decomposes one prompt into several searches, and these are the terms it actually ran, which is the clearest signal of how it read the question.
-3. **`shoppingCards`** — product cards with price, merchant, availability and whether the item is checkoutable in-chat.
-4. **`inlineProducts`** — products embedded in the answer text, separate from the carousels.
-5. **`ads`** — sponsored blocks, parsed.
-6. **`map`** — business and location entries with rating, reviews and address.
-7. **`rawResponse`** — the unparsed upstream payload, when you want to parse it yourself.
+1. **`sources`** — every cited URL with position, label and description.
+2. **`citationPills`** — the inline citation chips, one entry per cited source, sharing a `citationPillId` when a pill cites several.
+3. **`entities`** — the products, brands and concepts the answer names, each with a type.
+4. **`searchQueries`** — the query fan-out. ChatGPT decomposes one prompt into several searches, and these are the terms it actually ran, which is the clearest signal of how it read the question. It comes back empty on ChatGPT's default mobile-web interface; `legacy: true` asks for the legacy interface that returns it, on a best-effort basis ([why](https://cloro.dev/docs/api-reference/endpoint/monitor-chatgpt)).
+5. **`shoppingCards`** — product carousels, each grouping `products[]` with their price and merchant offers ([schema](https://cloro.dev/docs/api-reference/endpoint/chatgpt/shopping-cards)).
+6. **`inlineProducts`** — products embedded in the answer text, separate from the carousels.
+7. **`ads`** — sponsored blocks, parsed.
+8. **`map`** — business and location entries with rating, reviews and address.
+9. **`rawResponse`** — the unparsed upstream payload, when you want to parse it yourself.
 
 Full field-level schemas are in the [endpoint reference](https://cloro.dev/docs/api-reference/endpoint/monitor-chatgpt).
 
@@ -112,7 +113,7 @@ OpenAI ships UI changes roughly weekly, and dynamic CSS class names change betwe
 
 ### What is the recommended timeout?
 
-60 seconds. Responses stream, so a long answer takes noticeably longer than a static page fetch. Use the async endpoint for batches.
+At least 5 minutes (300 seconds), because cloro retries failed attempts server-side before it answers ([retries and cancellation](https://cloro.dev/docs/guides/error-handling#retries-and-cancellation)). Use the async endpoint for batches.
 
 ## Learn more
 
@@ -125,4 +126,4 @@ OpenAI ships UI changes roughly weekly, and dynamic CSS class names change betwe
 
 ## Contact us
 
-Questions or support: [r/cloroapi](https://www.reddit.com/r/cloroapi/).
+Questions or support: [ask the docs AI assistant](https://cloro.dev/docs/?assistant).

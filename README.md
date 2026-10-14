@@ -49,7 +49,7 @@ Node.js and async/webhook examples are in the [endpoint documentation](https://c
 
 | Parameter | Description | Default |
 | --- | --- | --- |
-| `prompt`\* | The query or question (1-10,000 characters) | – |
+| `prompt`\* | The query or question (1-10,000 characters), or an array of up to 5 for a [multi-turn conversation](https://cloro.dev/docs/api-reference/endpoint/monitor-chatgpt#multi-turn-conversations) (`result` is then an array) | – |
 | `country`\* | Country code for localized results (`US`, `GB`, `DE`) | – |
 | `state` | US state code for finer localization | – |
 | `include.markdown` | Return the answer as Markdown | `false` |
@@ -87,6 +87,7 @@ Alongside `text` and `markdown`:
 7. **`ads`** — sponsored blocks, parsed.
 8. **`map`** — business and location entries with rating, reviews and address.
 9. **`rawResponse`** — the unparsed upstream payload, when you want to parse it yourself.
+10. **`followUpForm`** — the form ChatGPT shows to refine the prompt: its questions, their options and the follow-up prompt it would send ([schema](https://cloro.dev/docs/api-reference/endpoint/chatgpt/follow-up-form)). `null` when the answer has no form.
 
 Full field-level schemas are in the [endpoint reference](https://cloro.dev/docs/api-reference/endpoint/monitor-chatgpt).
 

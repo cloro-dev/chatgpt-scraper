@@ -106,7 +106,7 @@ With its web search tool it searches and cites sources, but it cites a different
 
 ### Playwright or a paid API for scraping AI chat answers?
 
-With Playwright you run the browser sessions, proxies, retries and parsing yourself. cloro runs them behind one API call: [a real browser session](https://cloro.dev/docs/guides/providers#how-does-cloro-retrieve-data-from-ai-providers) on ChatGPT's web interface through a proxy in the country you set, up to 5 attempts, and JSON back. You pay only for results. It also returns Perplexity, Gemini, Copilot, Google AI Mode and AI Overview answers.
+With Playwright you run the browser sessions, proxies, retries and parsing yourself. cloro runs them behind one API call: [a real browser session](https://cloro.dev/docs/guides/providers#how-does-cloro-retrieve-data-from-ai-providers) on ChatGPT's web interface through a proxy in the country you set, up to 5 attempts, and JSON back. You pay only for results. It also returns Gemini, Google AI Mode and AI Overview answers.
 
 ### Is scraping ChatGPT allowed?
 
@@ -131,7 +131,7 @@ At least 5 minutes (300 seconds), because cloro retries failed attempts server-s
 
 ## Other cloro scrapers
 
-[AI Mode](https://cloro.dev/ai-mode/) · [AI Overview](https://cloro.dev/ai-overview/) · [Copilot](https://cloro.dev/copilot/) · [Gemini](https://cloro.dev/gemini/) · [Google Search](https://cloro.dev/google-search/) · [Google News](https://cloro.dev/google-news/) · [Perplexity](https://cloro.dev/perplexity/)
+[AI Mode](https://cloro.dev/ai-mode/) · [AI Overview](https://cloro.dev/ai-overview/) · [Gemini](https://cloro.dev/gemini/) · [Google Search](https://cloro.dev/google-search/) · [Google News](https://cloro.dev/google-news/)
 
 ## Contact us
 

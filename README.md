@@ -100,9 +100,23 @@ Full field-level schemas are in the [endpoint reference](https://cloro.dev/docs/
 
 ## FAQ
 
-### Why not use the official OpenAI API?
+### How do I get ChatGPT responses programmatically without using the OpenAI API?
 
-With its web search tool it searches and cites sources, but it cites a different set of pages than ChatGPT shows its users. cloro reads ChatGPT's web interface in a real browser session, the surface users see.
+POST the prompt and a `country` to `https://api.cloro.dev/v1/monitor/chatgpt` with your cloro API key, and read the answer from the JSON response. cloro runs the prompt on ChatGPT's web interface in a real browser, in a logged-out session, through a proxy in that country. The response holds `text`, `sources`, `citationPills` and `entities`, plus `markdown` and `searchQueries` when you ask for them. The OpenAI API answers from the model: its [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search) also returns URL citations, but it cites a different set of pages than ChatGPT shows its users.
+
+### What should I use instead of unofficial ChatGPT API wrappers?
+
+Use the official OpenAI API when you want the model, and a managed scraper such as cloro when you want what the ChatGPT web app shows. Unofficial wrappers are open-source libraries that drive chatgpt.com with an account's session token or with browser automation, so they depend on that account session and break when OpenAI changes the web app. [acheong08/ChatGPT](https://github.com/acheong08/ChatGPT) (`revChatGPT`), for example, logs in with an email and password or a session `access_token`, and its repository is archived. cloro runs logged-out sessions with no account, and it keeps its parsers current as the web app changes.
+
+### How do I build a dataset of ChatGPT answers for research?
+
+Fix the prompt list, the countries and the schedule, then submit each run to the async batch endpoint, `POST https://api.cloro.dev/v1/async/task/batch`, which takes up to 500 tasks per request:
+
+```json
+[{"taskType": "CHATGPT", "idempotencyKey": "p01-US-run1", "payload": {"prompt": "best crm for startups", "country": "US", "include": {"searchQueries": true}}}]
+```
+
+Store the raw JSON of each answer with the task's `createdAt`, its `country` and `result.model`, which is `null` when OpenAI serves its mobile-web format. Sample each prompt several times, because ChatGPT picks the model per request and its fan-out queries vary between runs of the same prompt. Save results as they arrive: finished tasks are deleted about 24 hours after you create them ([async requests](https://cloro.dev/docs/guides/making-requests/async)). Each answer costs 5 credits async, or 7 with `include.searchQueries` ([pricing](https://cloro.dev/docs/guides/providers#chatgpt-additional-features)).
 
 ### Playwright or a paid API for scraping AI chat answers?
 
